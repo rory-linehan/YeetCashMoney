@@ -1,0 +1,10 @@
+{
+  "flip": {
+    "base_url": "https://www.ge-tracker.com/api/",
+    "headers": {
+      "Authorization": "Bearer {token}"
+      "Accept": "application/x.getracker.v1+json"
+    },
+    "api_key": ""
+  }
+}

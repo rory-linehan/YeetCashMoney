@@ -1,0 +1,7 @@
+build/
+*.c
+*.html
+*.so
+__pycache__/
+.idea/
+vendor/

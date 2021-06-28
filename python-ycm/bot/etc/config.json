@@ -1,0 +1,25 @@
+{
+  "bot": {
+    "accounts": [
+      {
+        "name": "bot",
+        "username": "test@gmail.com",
+        "password": "yourPassword",
+        "vpn": {
+          "provider": "protonvpn",
+          "country": "us",
+          "state": "ut",
+          "name": "us-ut-01"
+        },
+        "activities": [
+          {
+            "name": "mine_iron_mining_guild",
+            "schedule": {
+              "seconds": 8000
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

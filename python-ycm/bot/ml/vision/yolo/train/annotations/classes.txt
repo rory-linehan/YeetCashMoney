@@ -1,0 +1,10 @@
+login_NewUser
+login_ExistingUser
+cursor
+login_WorldSwitcher
+runelite
+login_Login
+login_Cancel
+login_textbox_Login
+login_textbox_Password
+login_Play
