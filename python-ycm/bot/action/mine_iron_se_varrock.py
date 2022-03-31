@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import pyautogui
 import random
 import time
-from python.bot import common
+from .. import common
 
 # define module constants here
 MODULE = 'mine_iron_se_varrock'  # directory in vision/artifacts needs to match this

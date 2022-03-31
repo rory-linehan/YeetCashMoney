@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import pyautogui
 import random
 import time
-from python.bot import common
+from .. import common
 
 MODULE = 'smelt_steel_al-kharid'  # directory in vision/artifacts needs to match this
 MATCH_THRESHOLD = 0.8

@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import pyautogui
 import random
 import time
-from python.bot import common
+from .. import common
 
 # define global constants here
 MODULE = 'mine_copper_tin_se_varrock'  # directory in vision/artifacts needs to match this

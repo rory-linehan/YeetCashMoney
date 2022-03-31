@@ -3,7 +3,7 @@
 import argparse
 import sys
 import os
-import pypvpnctl
+#import pypvpnctl
 import common
 from flip import flipper
 from bot.ml.vision.factory import train as vision_train

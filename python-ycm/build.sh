@@ -53,4 +53,4 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install java 11.0.7.hs-adpt
 
 # install RuneLite
-wget https://github.com/runelite/launcher/releases/download/2.1.2/RuneLite.jar --output-document=$HOME/bin/RuneLite.jar
+wget https://github.com/runelite/launcher/releases/download/2.4.2/RuneLite.jar --output-document=$HOME/bin/RuneLite.jar

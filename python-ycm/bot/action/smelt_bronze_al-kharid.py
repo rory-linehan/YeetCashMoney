@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import pyautogui
 import random
 import time
-from python.bot import common
+from .. import common
 
 # define module constants here
 MODULE = 'smelt_bronze_al-kharid'  # directory in vision/artifacts needs to match this
