@@ -4,6 +4,7 @@ import numpy as np
 import random
 import time
 import os
+import glob
 
 pyautogui.FAILSAFE = False
 pyautogui.PAUSE = 0.1
@@ -113,13 +114,14 @@ def move_mouse_randomish():
 def find_object(image, threshold):
     try:
         haystack = cv2.cvtColor(np.array(
-            pyautogui.screenshot('/tmp/ycm.cache.png')),
+            pyautogui.screenshot('/tmp/ycm-cache/screenshot.png')),
             cv2.COLOR_RGB2BGR
         )
         needle = cv2.imread(image)
         result = cv2.matchTemplate(haystack, needle, cv2.TM_CCOEFF_NORMED)
         location = np.where(result >= threshold)
-        os.remove('/tmp/ycm.cache.png')
+        for filename in glob.glob('/tmp/ycm-cache/*.png'):
+            os.remove(filename)
         # this returns two tuples for each object found
         return list(zip(*location[::-1]))
     except SystemError as err:

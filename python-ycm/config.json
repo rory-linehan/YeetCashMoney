@@ -13,9 +13,15 @@
         },
         "activities": [
           {
-            "name": "mine_iron_mining_guild",
+            "name": "mine_adamantite_mining_guild",
             "schedule": {
               "seconds": 8000
+            }
+          },
+          {
+            "name": "mine_iron_mining_guild",
+            "schedule": {
+              "seconds": 5000
             }
           }
         ]
