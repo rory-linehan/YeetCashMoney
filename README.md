@@ -1,8 +1,6 @@
 # Yeet Cash Money
 
-This repository is exactly what it sounds like. 
-Currently botting on Runescape to yeet that cash money, 
-but certainly not opposed to some scope creep to other games.
+This repository is exactly what it sounds like.
 
 ## Overview
 
