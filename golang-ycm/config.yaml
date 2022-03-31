@@ -1,5 +1,0 @@
-artifacts: etc/artifacts
-activities:
-- name: mineIronMiningGuild
-  schedule:
-    seconds: 8000

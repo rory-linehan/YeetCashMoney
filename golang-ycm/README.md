@@ -1,2 +1,0 @@
-# Runescape Golang Bot
-
