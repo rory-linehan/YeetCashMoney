@@ -119,6 +119,7 @@ def find_object(image, threshold):
         needle = cv2.imread(image)
         result = cv2.matchTemplate(haystack, needle, cv2.TM_CCOEFF_NORMED)
         location = np.where(result >= threshold)
+        os.remove('/tmp/ycm.cache.png')
         # this returns two tuples for each object found
         return list(zip(*location[::-1]))
     except SystemError as err:

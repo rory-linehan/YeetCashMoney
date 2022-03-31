@@ -48,14 +48,14 @@ if __name__ == "__main__":
                         flipper.do(response[args.mode])
                 elif args.mode == 'bot':
                     for account in config['accounts']:
-                        if args.vpn:
-                            status, message, response = pypvpnctl.connect(
-                                account['vpn']['name'],
-                                'tcp'
-                            )
-                            if status is not True:
-                                print(message)
-                                sys.exit(1)
+                        # if args.vpn:
+                        #     status, message, response = pypvpnctl.connect(
+                        #         account['vpn']['name'],
+                        #         'tcp'
+                        #     )
+                        #     if status is not True:
+                        #         print(message)
+                        #         sys.exit(1)
                         #rl = common.runelite()
                         rl = None
                         status, message = login.do(
@@ -75,13 +75,13 @@ if __name__ == "__main__":
                                 sys.exit(1)
                         else:
                             print('failed to login to account: ' + message)
-                        if args.vpn:
-                            status, message, response = pypvpnctl.disconnect()
-                            if status is False:
-                                print(message)
-                                sys.exit(1)
-                            else:
-                                print('disconnected from vpn')
+                        # if args.vpn:
+                        #     status, message, response = pypvpnctl.disconnect()
+                        #     if status is False:
+                        #         print(message)
+                        #         sys.exit(1)
+                        #     else:
+                        #         print('disconnected from vpn')
                 else:
                     print('--mode parameter invalid, expecting [flip,bot]')
                     sys.exit(1)
