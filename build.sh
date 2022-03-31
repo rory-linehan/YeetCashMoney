@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
 # this script make several assumptions:
-#   you don't mind compiling and installing Python 3.7.6 to /usr/local/bin via `sudo make altinstall`
-#   you don't mind installing Go 1.10.4
+#   you don't mind compiling and installing Python 3.9.7 to /usr/local/bin via `sudo make altinstall`
 #   you don't mind installing the Nvidia CUDA toolkit version 10.2
 #   user running this script has sudo privilege
 #   you will run the application later as the user installing the script
 
-protonvpn=$1
+#protonvpn=$1
 
 mkdir -p $HOME/bin
 
@@ -24,28 +23,24 @@ sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub
 sudo apt-get update
 sudo apt-get -y install cuda
 
-# install python 3.7.6 and dependencies
-wget https://www.python.org/ftp/python/3.7.6/Python-3.7.6.tgz --output-document=bin/Python-3.7.6.tgz
+# install python 3.9.7 and dependencies
+wget https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz --output-document=bin/Python-3.9.7.tgz
 cd bin || exit
-tar -xf Python-3.7.6.tgz
-cd Python-3.7.6 || exit
+tar -xf Python-3.9.7.tgz
+cd Python-3.9.7 || exit
 ./configure --enable-optimizations && \
 make -j 4 && \
 sudo make altinstall && \
 cd ../.. || exit
-python3.7 -V || exit
+python3.9 -V || exit
 
 # install ycm requirements, build Cython modules, and init protonvpn IF parameter was set
-sudo pip3.7 install -r requirements.txt && \
-python3.7 setup.py build_ext --inplace
-if [$protonvpn == "vpn"]
-then
-  sudo protonvpn init
-fi
-
-# install golang and compile dependencies
-#sudo apt install -y golang && \
-#go get -u github.com/rory-linehan/cu
+pip3.9 install -r requirements.txt && \
+python3.9 setup.py build_ext --inplace
+#if [$protonvpn == "vpn"]
+#then
+#  sudo protonvpn init
+#fi
 
 # install sdkman!
 curl -s "https://get.sdkman.io" | bash

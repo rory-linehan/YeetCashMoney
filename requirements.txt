@@ -1,5 +1,4 @@
 requests
-pathlib
 protonvpn-cli
 git+https://github.com/rory-linehan/pypvpnctl
 pyautogui
