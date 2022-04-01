@@ -24,19 +24,14 @@ The `bot` module contains all the code for running bots.
 * `bot/classic` contains code that uses classic rules based reasoning
 to move through workflows.
 * `bot/ml` contains machine learning code for a more modern approach.
-  * **This module is not currently used or even working correctly.**
+  * **This module is not currently working.**
 
 List of functioning modules:
  * `bot/classic/action/smelt_steel_al-kharid.py`
-   * Smelts steel bars in Al-Kharid
  * `bot/classic/action/mine_coal_barbarian_village.py`
-   * Mines coal in Barbarian Village
  * `bot/classic/action/mine_iron_se_varrock.py`
-   * Mines iron in SE Varrock
  * `bot/classic/action/smelt_bronze_al-kharid.py`
-   * Smelts bronze bars in Al-Kharid
  * `bot/classic/action/mine_copper_tin_se_varrock.py`
-   * Mines copper and tin in SE Varrock
    
 To use one of the above functioning action modules, 
 open up the `bot/etc/config.json` file and change the `activities` section:

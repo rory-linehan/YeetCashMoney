@@ -1,6 +1,6 @@
 requests
 protonvpn-cli
-git+https://github.com/rory-linehan/pypvpnctl
+#git+https://github.com/rory-linehan/pypvpnctl
 pyautogui
 tk
 opencv-python

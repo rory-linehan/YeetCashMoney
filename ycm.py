@@ -1,5 +1,3 @@
-#!/usr/local/bin/python3.7
-
 import argparse
 import sys
 import os
@@ -7,6 +5,7 @@ import os
 import common
 from flip import flipper
 from bot.ml.vision.factory import train as vision_train
+from bot.action import *
 
 
 class DirContext:
