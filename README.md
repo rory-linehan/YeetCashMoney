@@ -27,11 +27,11 @@ to move through workflows.
   * **This module is not currently working.**
 
 List of functioning modules:
- * `bot/classic/action/smelt_steel_al-kharid.py`
- * `bot/classic/action/mine_coal_barbarian_village.py`
- * `bot/classic/action/mine_iron_se_varrock.py`
- * `bot/classic/action/smelt_bronze_al-kharid.py`
- * `bot/classic/action/mine_copper_tin_se_varrock.py`
+ * `bot/action/smelt_steel_al-kharid.py`
+ * `bot/action/mine_coal_barbarian_village.py`
+ * `bot/action/mine_iron_se_varrock.py`
+ * `bot/action/smelt_bronze_al-kharid.py`
+ * `bot/action/mine_copper_tin_se_varrock.py`
    
 To use one of the above functioning action modules, 
 open up the `bot/etc/config.json` file and change the `activities` section:
