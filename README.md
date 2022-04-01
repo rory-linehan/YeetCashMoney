@@ -8,10 +8,10 @@ but I don't guarantee it will work.
 
 `build.sh` will install the base dependencies automatically.
 
-This application expects a `ramfs` mounted at `/tmp/ycm-cache`:
+This application expects a `ramfs` mounted at `/tmp/yeetcachemoney`:
 
 ```
-ramfs /tmp/ycm-cache tmpfs nodev,nosuid,noexec,nodiratime,size=128M 0 0
+ramfs /tmp/yeetcachemoney tmpfs nodev,nosuid,noexec,nodiratime,size=128M 0 0
 ```
 
 `ml_build.sh` installs machine learning dependencies.
