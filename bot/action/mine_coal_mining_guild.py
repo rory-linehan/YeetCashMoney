@@ -5,16 +5,16 @@ import time
 from .. import common
 
 # define module constants here
-MODULE = 'mine_iron_mining_guild'  # directory in vision/artifacts needs to match this
+MODULE = 'mine_coal_mining_guild'  # directory in vision/artifacts needs to match this
 MATCH_THRESHOLD = 0.8
 INVENTORY_THRESHOLD = 0.95
 NAVIGATE_THRESHOLD = 0.7
 NO_REVERSE = False
 REVERSE = True
-BAIL = 5
+BAIL = 100
 INVENTORY_NUMBER = 26
 COMMON_MATRIX = [
-  'iron_inventory',
+  'coal_inventory',
   'bank_window',
   'action_bar_full',
   'action_bar_empty',
@@ -33,16 +33,16 @@ def run(interval):
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
   om = [  # object matrix
-    'iron_rock',
+    'coal_rock',
     'bank_chest',
-    'iron_spot',
+    'coal_spot',
     'bank_chest',
     'in_place'
   ]
   objects, path, COMMON_OBJECTS = common.load_objects(MODULE, om, COMMON_MATRIX)
   if objects is not None and path is not None:
     inventory_items = [
-      COMMON_OBJECTS['iron_inventory'],
+      COMMON_OBJECTS['coal_inventory'],
       COMMON_OBJECTS['sapphire'],
       COMMON_OBJECTS['ruby'],
       COMMON_OBJECTS['emerald'],
@@ -126,7 +126,7 @@ def run(interval):
         in_place = False
         while in_place is False:
           common.move_mouse_randomish()
-          for image in objects['iron_spot']:
+          for image in objects['coal_spot']:
             result = common.find_object(
               image,
               NAVIGATE_THRESHOLD
@@ -146,23 +146,28 @@ def run(interval):
             )
             if len(result) > 0:
               in_place = True
-        print('mining iron...')
+        print('mining coal...')
         inventory_full = False
         while inventory_full is False:
-          for image in objects['iron_rock']:
-            iron = common.find_object(
+          for image in objects['coal_rock']:
+            coal = common.find_object(
               image,
               MATCH_THRESHOLD
             )
-            if len(iron) > 0:
+            if len(coal) > 0:
               common.move_mouse(
-                iron[0][0] + common.offset('small'),
-                iron[0][1] + common.offset('small'),
+                coal[0][0] + common.offset('small'),
+                coal[0][1] + common.offset('small'),
                 'now'
               )
               pyautogui.click()
               common.move_mouse_randomish()
-              common.random_delay_short()
+              common.wait_for_inventory_to_change(
+                inventory_box,
+                inventory_items,
+                INVENTORY_THRESHOLD,
+                BAIL
+              )
               if count >= INVENTORY_NUMBER - 2:
                 break
           inventory_full, count = common.check_inventory(
