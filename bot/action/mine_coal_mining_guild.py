@@ -13,7 +13,7 @@ NO_REVERSE = False
 REVERSE = True
 BAIL = 100
 INVENTORY_NUMBER = 26
-COMMON_MATRIX = [
+SELECTOR_MATRIX = [
   'coal_inventory',
   'bank_window',
   'action_bar_full',
@@ -32,14 +32,14 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  om = [  # object matrix
+  OBJECT_SELECTOR =  [  # object matrix
     'coal_rock',
     'bank_chest',
     'coal_spot',
     'bank_chest',
     'in_place'
   ]
-  objects, path, COMMON_OBJECTS = common.load_objects(MODULE, om, COMMON_MATRIX)
+  objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
   if objects is not None and path is not None:
     inventory_items = [
       COMMON_OBJECTS['coal_inventory'],

@@ -14,7 +14,7 @@ REVERSE = True
 BAIL = 20
 INVENTORY_NUMBER_BRONZE_BARS = 10
 INVENTORY_NUMBER_ORES = 20
-COMMON_MATRIX = [
+SELECTOR_MATRIX = [
   'bank_window',
   'action_bar_full',
   'action_bar_empty',
@@ -32,14 +32,14 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  om = [  # object matrix
+  OBJECT_SELECTOR =  [  # object matrix
     'location_bank',
     'location_furnace',
     'furnace_actual',
     'menu_bronze_bar',
     'bank_booth',
   ]
-  objects, path, COMMON_OBJECTS = common.load_objects(MODULE, om, COMMON_MATRIX)
+  objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
   if objects is not None and path is not None:
     time.sleep(random.choice(range(1, 12)))
     # do not bot for longer than the configured time

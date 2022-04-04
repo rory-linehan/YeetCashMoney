@@ -13,7 +13,7 @@ NO_REVERSE = False
 REVERSE = True
 BAIL = 20
 INVENTORY_NUMBER = 25
-COMMON_MATRIX = [
+SELECTOR_MATRIX = [
   'iron_inventory',
   'bank_window',
   'action_bar_full',
@@ -32,13 +32,13 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  om = [  # object matrix
+  OBJECT_SELECTOR =  [  # object matrix
     'iron_rock',
     'location_bank',
     'location_mine',
     'bank_booth'  # TODO: this should really be in `artifacts/common`, under a directory denoting the location of the bank
   ]
-  objects, path, COMMON_OBJECTS = common.load_objects(MODULE, om, COMMON_MATRIX)
+  objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
   if objects is not None and path is not None:
     # do not bot for longer than the configured time
     time.sleep(random.choice(range(1, 4)))

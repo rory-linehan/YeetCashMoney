@@ -13,7 +13,7 @@ NO_REVERSE = False
 REVERSE = True
 BAIL = 75
 INVENTORY_NUMBER = 26
-COMMON_MATRIX = [
+SELECTOR_MATRIX = [
   'adamantite_inventory',
   'bank_window',
   'action_bar_full',
@@ -32,14 +32,14 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  om = [  # object matrix
+  OBJECT_SELECTOR =  [  # object matrix
     'adamantite_rock',
     'bank_chest',
     'location_mine'
   ]
   # do not bot for longer than the configured time
   while datetime.now() < end_time:
-    objects, path, COMMON_OBJECTS = common.load_objects(MODULE, om, COMMON_MATRIX)
+    objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
     if objects is not None and path is not None:
       inventory_items = [
         COMMON_OBJECTS['adamantite_inventory'],
@@ -159,7 +159,7 @@ def run(interval):
               pyautogui.click()
               common.move_mouse_randomish()
               break
-          objects, path, COMMON_OBJECTS = common.load_objects(MODULE, om, COMMON_MATRIX)
+          objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
         common.wait_for_inventory_to_change(
           inventory_box,
           [COMMON_OBJECTS['adamantite_inventory']],

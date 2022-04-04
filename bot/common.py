@@ -21,9 +21,13 @@ def random_delay_long():
   time.sleep(random.choice([1, 1.25, 1.32, 1.46, 1.72, 1.85, 2]))
 
 
+def random_delay_preposterous():
+  time.sleep(random.choice(range(10, 120, random.choice(range(1, 7)))))
+
+
 # load all images that will be used to identify
 # in-game objects for the current module
-def load_objects(module, matrix, common_matrix):
+def load_objects(module, matrix, SELECTOR_MATRIX):
   objects = {}
   navigation = []
   common = {}
@@ -44,7 +48,7 @@ def load_objects(module, matrix, common_matrix):
             objects[m].extend([os.path.join(dirpath, filename)])
   for (dirpath, dirnames, filenames) in os.walk(os.path.join('vision/artifacts', 'common')):
     for filename in filenames:
-      for m in common_matrix:
+      for m in SELECTOR_MATRIX:
         if m not in common:
           common[m] = []
         if m in filename:
@@ -74,7 +78,7 @@ def adjust_perspective_randomly():
   pyautogui.keyUp(key)
 
 
-def move_mouse(x, y, when):
+def move_mouse(x, y, when='now'):
   # TODO: need a function that generates a random x, y within set boundaries of like 20 pixels
   if when == 'now':
     pyautogui.moveTo(x, y, random.choice([0.1, 0.15, 0.2, 0.25, 0.3, 0.4]))
@@ -111,7 +115,9 @@ def move_mouse_randomish():
 # returns all instances of image on the screen
 # https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_template_matching/py_template_matching.html
 # https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_gui/py_image_display/py_image_display.html#display-image
-def find_object(image, threshold):
+def find_object(image, threshold, debug=False):
+  for filename in glob.glob('/tmp/yeetcachemoney/*'):
+    os.remove(filename)
   try:
     haystack = cv2.cvtColor(np.array(
       pyautogui.screenshot('/tmp/yeetcachemoney/screenshot.png')),
@@ -120,16 +126,19 @@ def find_object(image, threshold):
     needle = cv2.imread(image)
     result = cv2.matchTemplate(haystack, needle, cv2.TM_CCOEFF_NORMED)
     location = np.where(result >= threshold)
-    for filename in glob.glob('/tmp/yeetcachemoney/*.png'):
-      os.remove(filename)
     # this returns two tuples for each object found
-    return list(zip(*location[::-1]))
+    found = list(zip(*location[::-1]))
+    if debug:
+      for i in found:
+        move_mouse(i[0], i[1], 'now')
+        random_delay_short()
+    return found
   except SystemError as err:
     print('SystemError exception while finding image ('+str(image)+'): ' + str(err))
     return False
 
 
-def calculate_inventory_box(markers, threshold):
+def calculate_inventory_box(markers, threshold, debug=False):
   # find the inventory so we can calculate a box around it
   result = []
   while len(result) == 0:
@@ -138,13 +147,17 @@ def calculate_inventory_box(markers, threshold):
         result += find_object(image, threshold)
         if len(result) > 0:
           # inventory box coordinates
-          return [
-            [result[0][0] + 200, result[0][1] - 300],
-            [result[0][0] + 400, result[0][1]]
+          coordinates = [
+            [result[0][0], result[0][1]],
+            [result[0][0] + 200, result[0][1] + 272]
           ]
+          if debug:
+            move_mouse(coordinates[0][0], coordinates[0][1])
+            move_mouse(coordinates[1][0], coordinates[1][1])
+          return coordinates
 
 
-def calculate_bank_box(markers, threshold):
+def calculate_bank_box(markers, threshold, debug=False):
   # find the bank window so we can calculate a box around it
   result = []
   while len(result) == 0:
@@ -153,22 +166,31 @@ def calculate_bank_box(markers, threshold):
         result += find_object(image, threshold)
         if len(result) > 0:
           # bank box coordinates
-          return [
+          coordinates = [
             [result[0][0], result[0][1]],
-            [result[0][0] + 500, result[0][1] + 800]
+            [result[0][0] + 450, result[0][1] + 700]
           ]
+          if debug:
+            move_mouse(coordinates[0][0], coordinates[0][1])
+            move_mouse(coordinates[1][0], coordinates[1][1])
+          return coordinates
 
 
 def check_inventory(
     box,
     items,
     threshold,
-    inventory_number
+    inventory_number,
+    debug=False
 ):
   total = 0
   for item in items:
     for image in item:
-      result = find_object(image, threshold)
+      result = find_object(
+        image,
+        threshold,
+        debug
+      )
       if len(result) > 0:
         for r in result:
           if (box[0][0] < r[0] < box[1][0]) and (box[0][1] < r[1] < box[1][1]):
@@ -227,21 +249,20 @@ def navigate(
   sorted_sequence = sorted(sequence, reverse=reverse)
   for step, _ in enumerate(sorted_sequence):
     time.sleep(random.choice(range(2, 5)))
+    # if no destination, look for next step
+    print('looking for step ('+str(step)+'): '+str(sorted_sequence[step]))
     result = []
     while len(result) == 0:
-      # if no destination, look for next step
-      print('looking for step (' + str(step) + '): ' + str(sorted_sequence[step]))
-      result = []
-      while len(result) == 0:
-        result = find_object(sorted_sequence[step][1], threshold)
-        if len(result) > 0:
-          print('found next step ('+str(step)+') at ' + str(result))
-          pyautogui.moveTo(
-            result[0][0] + offset('small'),
-            result[0][1] + offset('small')
-          )
-          pyautogui.click()
-          move_mouse_randomish()
+      result = find_object(sorted_sequence[step][1], threshold)
+      if len(result) > 0:
+        print('found next step ('+str(step)+') at '+str(result))
+        move_mouse(
+          result[0][0] + offset('small'),
+          result[0][1] + offset('small'),
+          'lazy'
+        )
+        pyautogui.click()
+        move_mouse_randomish()
   # wait for a bit to get into optimal position to find destination
   time.sleep(random.choice(range(5, 8)))
   # get to destination
@@ -336,53 +357,64 @@ def withdraw(
     inventory_objects,
     bank_threshold,
     inventory_threshold,
-    inventory_number
+    inventory_number,
+    debug=False
 ):
   print('selecting the bank booth...')
   bank_is_open = False
   while bank_is_open is False:
-    random_delay_short()
     # find and click the bank booth
     result = []
     while len(result) == 0:
       for image in bank_booth:
-        result = find_object(image, bank_threshold)
+        result = find_object(
+          image,
+          bank_threshold
+        )
         if len(result) > 0:
-          pyautogui.moveTo(
+          move_mouse(
             result[0][0] + offset('small'),
             result[0][1] + offset('small'),
-            0.1
+            'now'
           )
           pyautogui.leftClick()
           break
-      time.sleep(random.choice(range(5, 10)))
-      # let's make sure the bank window is actually open
+      random_delay_short()
+      # make sure the bank window is actually open
       for image in common_objects['bank_window']:
-        result = find_object(image, bank_threshold)
+        result = find_object(
+          image,
+          bank_threshold
+        )
         if len(result) > 0:
           bank_is_open = True
           break
   bank_box = calculate_bank_box(
     [common_objects['bank_window']],
-    bank_threshold
+    bank_threshold,
+    debug
   )
   print('bank box: ' + str(bank_box))
   # withdraw items
   while True:
     for item in bank_objects:
-      random_delay_long()
       # is the inventory good to go yet?
       full, count = check_inventory(
         inventory_box,
         inventory_objects,
         inventory_threshold,
-        inventory_number
+        inventory_number,
+        debug
       )
       print('inventory count: (' + str(count) + ')')
       if count < inventory_number:
         print('withdrawing item: ' + str(item))
         for image in item:
-          result = find_object(image, inventory_threshold)
+          result = find_object(
+            image,
+            inventory_threshold,
+            debug
+          )
           if len(result) > 0:
             if (bank_box[0][0] < result[0][0] < bank_box[1][0]) \
                 and (bank_box[0][1] < result[0][1] < bank_box[1][1]):
