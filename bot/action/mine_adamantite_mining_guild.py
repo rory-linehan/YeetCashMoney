@@ -32,7 +32,7 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  OBJECT_SELECTOR =  [  # object matrix
+  OBJECT_SELECTOR = [  # object matrix
     'adamantite_rock',
     'bank_chest',
     'location_mine'
