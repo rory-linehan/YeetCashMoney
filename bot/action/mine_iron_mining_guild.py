@@ -71,14 +71,14 @@ def run(input):
           for image in objects['bank_chest']:
             result = common.find_object(image, MATCH_THRESHOLD)
             if len(result) > 0:
-              pyautogui.moveTo(
+              common.move_mouse(
                 result[0][0] + common.offset('tiny'),
                 result[0][1] + common.offset('tiny'),
-                0.1
+                'now'
               )
               pyautogui.leftClick()
               break
-          time.sleep(random.choice(range(4, 6)))
+          common.random_delay_giant()
           # let's make sure the bank window is actually open
           for image in common_objects['bank_window']:
             result = common.find_object(image, MATCH_THRESHOLD)
@@ -98,11 +98,9 @@ def run(input):
                 # we only want to select items within the inventory, given by `box`
                 if (inventory_box[0][0] < result[0][0] < inventory_box[1][0]) and \
                     (inventory_box[0][1] < result[0][1] < inventory_box[1][1]):
-                  x = result[0][0]
-                  y = result[0][1]
                   common.move_mouse(
-                    x + random.choice(range(2, 7)),
-                    y + random.choice(range(2, 7)),
+                    result[0][0] + common.offset('tiny'),
+                    result[0][1] + common.offset('tiny'),
                     'now'
                   )
                   pyautogui.leftClick()
@@ -129,17 +127,17 @@ def run(input):
               NAVIGATE_THRESHOLD
             )
             if len(result) > 0:
-              pyautogui.moveTo(
+              common.move_mouse(
                 result[0][0] + 15,
                 result[0][1] + 15,
-                0.1
+                'now'
               )
               pyautogui.leftClick()
-              time.sleep(random.choice(range(8, 10)))
+              common.random_delay_giant()
           for image in objects['in_place']:
             result = common.find_object(
               image,
-              MATCH_THRESHOLD
+              NAVIGATE_THRESHOLD
             )
             if len(result) > 0:
               in_place = True
