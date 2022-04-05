@@ -37,7 +37,16 @@ def run(input):
   # set up a bunch of variables used later
   end_time = datetime.now() + timedelta(seconds=input['interval'])
   objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
-  if objects is not None and path is not None:
+  inventory_box = common.calculate_inventory_box(
+    [
+      common_objects['inventory_box_empty']
+    ],
+    MATCH_THRESHOLD
+  )
+  print('inventory box: ' + str(inventory_box))
+  # do not bot for longer than the configured time
+  while datetime.now() < end_time:
+    objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
     inventory_items = [
       common_objects['coal_inventory'],
       common_objects['sapphire'],
@@ -46,132 +55,126 @@ def run(input):
       common_objects['diamond'],
       common_objects['clue_geode']
     ]
-    # do not bot for longer than the configured time
-    while datetime.now() < end_time:
-      inventory_box = common.calculate_inventory_box(
-        [
-          common_objects['action_bar_full'],
-          common_objects['action_bar_empty']
-        ],
-        INVENTORY_THRESHOLD
-      )
-      print('inventory box: ' + str(inventory_box))
-      print('checking for full inventory...')
-      status, count = common.check_inventory(
-        inventory_box,
-        inventory_items,
-        INVENTORY_THRESHOLD,
-        INVENTORY_NUMBER
-      )
-      if status is True:
-        print('inventory full ('+str(count)+'), depositing...')
-        bank_is_open = False
-        while bank_is_open is False:
-          # find and click the bank chest
-          for image in objects['bank_chest']:
-            result = common.find_object(image, MATCH_THRESHOLD)
-            if len(result) > 0:
-              pyautogui.moveTo(
-                result[0][0] + common.offset('tiny'),
-                result[0][1] + common.offset('tiny'),
-                0.1
-              )
-              pyautogui.leftClick()
-              break
-          time.sleep(random.choice(range(4, 6)))
-          # let's make sure the bank window is actually open
-          for image in common_objects['bank_window']:
-            result = common.find_object(image, MATCH_THRESHOLD)
-            if len(result) > 0:
-              bank_is_open = True
-        # deposit items
-        deposited = False
-        while deposited is False:
-          for item in inventory_items:
-            print('depositing item: ' + str(item))
-            for image in item:
-              result = common.find_object(
-                image,
-                INVENTORY_THRESHOLD
-              )
-              if len(result) > 0:
-                # we only want to select items within the inventory, given by `box`
-                if (inventory_box[0][0] < result[0][0] < inventory_box[1][0]) and \
-                    (inventory_box[0][1] < result[0][1] < inventory_box[1][1]):
-                  x = result[0][0]
-                  y = result[0][1]
-                  common.move_mouse(
-                    x + random.choice(range(2, 7)),
-                    y + random.choice(range(2, 7)),
-                    'now'
-                  )
-                  pyautogui.leftClick()
-                  break
-            full, count = common.check_inventory(
-              inventory_box,
-              inventory_items,
-              INVENTORY_THRESHOLD,
-              INVENTORY_NUMBER
+    print('checking for full inventory...')
+    full, count = common.check_inventory(
+      inventory_box,
+      inventory_items,
+      INVENTORY_THRESHOLD,
+      INVENTORY_NUMBER
+    )
+    if full is True:
+      print('inventory full ('+str(count)+'), depositing...')
+      bank_is_open = False
+      while bank_is_open is False:
+        # find and click the bank chest
+        for image in objects['bank_chest']:
+          result = common.find_object(
+            image,
+            MATCH_THRESHOLD
+          )
+          if len(result) > 0:
+            common.move_mouse(
+              result[0][0] + common.offset('tiny'),
+              result[0][1] + common.offset('tiny'),
+              'whenever'
             )
-            if count == 0:
-              deposited = True
-              break
-            else:
-              print('inventory still has something in it: (' + str(count) + ')')
-      else:
-        print('heading to mining spot...')
-        in_place = False
-        while in_place is False:
-          common.move_mouse_randomish()
-          for image in objects['coal_spot']:
+            pyautogui.leftClick()
+            break
+        time.sleep(random.choice(range(4, 6)))
+        # let's make sure the bank window is actually open
+        for image in common_objects['bank_window']:
+          result = common.find_object(
+            image,
+            MATCH_THRESHOLD
+          )
+          if len(result) > 0:
+            bank_is_open = True
+      # deposit items
+      deposited = False
+      while deposited is False:
+        for item in inventory_items:
+          print('depositing item: ' + str(item))
+          for image in item:
             result = common.find_object(
               image,
-              NAVIGATE_THRESHOLD
+              INVENTORY_THRESHOLD
             )
             if len(result) > 0:
-              pyautogui.moveTo(
-                result[0][0] + 15,
-                result[0][1] + 15,
-                0.1
-              )
-              pyautogui.leftClick()
-              time.sleep(random.choice(range(8, 10)))
-          for image in objects['in_place']:
-            result = common.find_object(
-              image,
-              MATCH_THRESHOLD
-            )
-            if len(result) > 0:
-              in_place = True
-        print('mining coal...')
-        inventory_full = False
-        while inventory_full is False:
-          for image in objects['coal_rock']:
-            coal = common.find_object(
-              image,
-              MATCH_THRESHOLD
-            )
-            if len(coal) > 0:
-              common.move_mouse(
-                coal[0][0] + common.offset('small'),
-                coal[0][1] + common.offset('small'),
-                'now'
-              )
-              pyautogui.click()
-              common.move_mouse_randomish()
-              common.wait_for_inventory_to_change(
-                inventory_box,
-                inventory_items,
-                INVENTORY_THRESHOLD,
-                BAIL
-              )
-              if count >= INVENTORY_NUMBER - 2:
+              # we only want to select items within the inventory, given by `box`
+              if (inventory_box[0][0] < result[0][0] < inventory_box[1][0]) and \
+                  (inventory_box[0][1] < result[0][1] < inventory_box[1][1]):
+                common.move_mouse(
+                  result[0][0] + common.offset('tiny'),
+                  result[0][1] + common.offset('tiny'),
+                  'now'
+                )
+                pyautogui.leftClick()
                 break
-          inventory_full, count = common.check_inventory(
+          full, count = common.check_inventory(
             inventory_box,
             inventory_items,
             INVENTORY_THRESHOLD,
             INVENTORY_NUMBER
           )
-          print('inventory count: ' + str(count))
+          if count == 0:
+            deposited = True
+            break
+          else:
+            print('inventory still has something in it: (' + str(count) + ')')
+    else:
+      print('heading to mining spot...')
+      in_place = False
+      while in_place is False:
+        common.move_mouse_randomish()
+        for image in objects['coal_spot']:
+          result = common.find_object(
+            image,
+            NAVIGATE_THRESHOLD
+          )
+          if len(result) > 0:
+            common.move_mouse(
+              result[0][0] + common.offset('tiny'),
+              result[0][1] + common.offset('tiny'),
+              'whenever'
+            )
+            pyautogui.leftClick()
+            time.sleep(random.choice(range(8, 10)))
+        for image in objects['in_place']:
+          result = common.find_object(
+            image,
+            MATCH_THRESHOLD
+          )
+          if len(result) > 0:
+            in_place = True
+      print('mining coal...')
+      full = False
+      while full is False:
+        for image in objects['coal_rock']:
+          result = common.find_object(
+            image,
+            MATCH_THRESHOLD
+          )
+          if len(result) > 0:
+            common.move_mouse(
+              result[0][0] + common.offset('small'),
+              result[0][1] + common.offset('small'),
+              'now'
+            )
+            pyautogui.leftClick()
+            common.move_mouse_randomish()
+            common.wait_for_inventory_to_change(
+              inventory_box,
+              inventory_items,
+              INVENTORY_THRESHOLD,
+              BAIL
+            )
+            if count >= INVENTORY_NUMBER - 2:
+              break
+        full, count = common.check_inventory(
+          inventory_box,
+          inventory_items,
+          INVENTORY_THRESHOLD,
+          INVENTORY_NUMBER
+        )
+        print('inventory count: ' + str(count))
   return True

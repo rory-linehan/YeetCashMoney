@@ -13,10 +13,27 @@
         },
         "activities": [
           {
-            "name": "navigation_mining_guild_and_edgeville",
-            "type": "navigation",
+            "name": "mine_coal_mining_guild",
+            "parameters": {
+              "interval": 20000
+            }
+          },
+          {
+            "name": "navigate_mining_guild_and_edgeville",
             "parameters": {
               "direction": 0
+            }
+          },
+          {
+            "name": "smelt_steel_edgeville",
+            "parameters": {
+              "interval": 10000
+            }
+          },
+          {
+            "name": "navigate_mining_guild_and_edgeville",
+            "parameters": {
+              "direction": 1
             }
           }
         ]
