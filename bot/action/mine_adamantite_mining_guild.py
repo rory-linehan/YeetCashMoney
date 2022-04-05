@@ -13,7 +13,7 @@ NO_REVERSE = False
 REVERSE = True
 BAIL = 75
 INVENTORY_NUMBER = 26
-SELECTOR_MATRIX = [
+COMMON_SELECTOR = [
   'adamantite_inventory',
   'bank_window',
   'action_bar_full',
@@ -32,27 +32,27 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  OBJECT_SELECTOR = [  # object matrix
+  MODULE_SELECTOR = [
     'adamantite_rock',
     'bank_chest',
     'location_mine'
   ]
   # do not bot for longer than the configured time
   while datetime.now() < end_time:
-    objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
+    objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
     if objects is not None and path is not None:
       inventory_items = [
-        COMMON_OBJECTS['adamantite_inventory'],
-        COMMON_OBJECTS['sapphire'],
-        COMMON_OBJECTS['ruby'],
-        COMMON_OBJECTS['emerald'],
-        COMMON_OBJECTS['diamond'],
-        COMMON_OBJECTS['clue_geode']
+        common_objects['adamantite_inventory'],
+        common_objects['sapphire'],
+        common_objects['ruby'],
+        common_objects['emerald'],
+        common_objects['diamond'],
+        common_objects['clue_geode']
       ]
     inventory_box = common.calculate_inventory_box(
       [
-        COMMON_OBJECTS['action_bar_full'],
-        COMMON_OBJECTS['action_bar_empty']
+        common_objects['action_bar_full'],
+        common_objects['action_bar_empty']
       ],
       INVENTORY_THRESHOLD
     )
@@ -87,7 +87,7 @@ def run(interval):
             break
         time.sleep(random.choice(range(4, 6)))
         # let's make sure the bank window is actually open
-        for image in COMMON_OBJECTS['bank_window']:
+        for image in common_objects['bank_window']:
           result = common.find_object(image, MATCH_THRESHOLD)
           if len(result) > 0:
             bank_is_open = True
@@ -159,10 +159,10 @@ def run(interval):
               pyautogui.click()
               common.move_mouse_randomish()
               break
-          objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
+          objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
         common.wait_for_inventory_to_change(
           inventory_box,
-          [COMMON_OBJECTS['adamantite_inventory']],
+          [common_objects['adamantite_inventory']],
           INVENTORY_THRESHOLD,
           BAIL
         )

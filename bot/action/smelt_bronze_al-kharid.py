@@ -14,7 +14,7 @@ REVERSE = True
 BAIL = 20
 INVENTORY_NUMBER_BRONZE_BARS = 10
 INVENTORY_NUMBER_ORES = 20
-SELECTOR_MATRIX = [
+COMMON_SELECTOR = [
   'bank_window',
   'action_bar_full',
   'action_bar_empty',
@@ -32,14 +32,14 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  OBJECT_SELECTOR = [  # object matrix
+  MODULE_SELECTOR = [
     'location_bank',
     'location_furnace',
     'furnace_actual',
     'menu_bronze_bar',
     'bank_booth',
   ]
-  objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
+  objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
   if objects is not None and path is not None:
     time.sleep(random.choice(range(1, 12)))
     # do not bot for longer than the configured time
@@ -47,8 +47,8 @@ def run(interval):
       print('calculating inventory box...')
       inventory_box = common.calculate_inventory_box(
         [
-          COMMON_OBJECTS['action_bar_full'],
-          COMMON_OBJECTS['action_bar_empty']
+          common_objects['action_bar_full'],
+          common_objects['action_bar_empty']
         ],
         INVENTORY_THRESHOLD
       )
@@ -56,7 +56,7 @@ def run(interval):
       _, bronze_bars = common.check_inventory(
         inventory_box,
         [
-          COMMON_OBJECTS['bronze_bar_inventory']
+          common_objects['bronze_bar_inventory']
         ],
         INVENTORY_THRESHOLD,
         INVENTORY_NUMBER_BRONZE_BARS
@@ -68,15 +68,15 @@ def run(interval):
         print('getting tin and copper...')
         common.withdraw(
           inventory_box,
-          COMMON_OBJECTS,
+          common_objects,
           objects['bank_booth'],
           [
-            COMMON_OBJECTS['tin_bank'],
-            COMMON_OBJECTS['copper_bank']
+            common_objects['tin_bank'],
+            common_objects['copper_bank']
           ],
           [
-            COMMON_OBJECTS['tin_inventory'],
-            COMMON_OBJECTS['copper_inventory']
+            common_objects['tin_inventory'],
+            common_objects['copper_inventory']
           ],
           MATCH_THRESHOLD,
           INVENTORY_THRESHOLD,
@@ -127,7 +127,7 @@ def run(interval):
             changed = common.wait_for_inventory_to_change(
               inventory_box,
               [
-                COMMON_OBJECTS['bronze_bar_inventory']
+                common_objects['bronze_bar_inventory']
               ],
               INVENTORY_THRESHOLD,
               BAIL
@@ -138,7 +138,7 @@ def run(interval):
               _, bronze_bars = common.check_inventory(
                 inventory_box,
                 [
-                  COMMON_OBJECTS['bronze_bar_inventory']
+                  common_objects['bronze_bar_inventory']
                 ],
                 INVENTORY_THRESHOLD,
                 INVENTORY_NUMBER_BRONZE_BARS
@@ -156,10 +156,10 @@ def run(interval):
         print('depositing inventory (' + str(bronze_bars) + ')...')
         common.deposit(
           inventory_box,
-          COMMON_OBJECTS,
+          common_objects,
           objects['bank_booth'],
           [
-            COMMON_OBJECTS['bronze_bar_inventory']
+            common_objects['bronze_bar_inventory']
           ],
           MATCH_THRESHOLD,
           INVENTORY_THRESHOLD,

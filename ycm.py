@@ -56,7 +56,7 @@ if __name__ == "__main__":
             #         sys.exit(1)
             #rl = common.runelite()
             rl = None
-            status, message = login.do(
+            status, message = login.do(  # dynamically loaded from bot.action
               rl,
               account['name'],
               account['username'],
@@ -67,7 +67,7 @@ if __name__ == "__main__":
                 for activity in account['activities']:
                   action = globals()[activity['name']]
                   with DirContext('bot'):
-                    action.run(activity['schedule']['seconds'])
+                    action.run(activity['parameters'])
               elif args.ml:
                 print("machine learning workflow not implemented")
                 sys.exit(1)

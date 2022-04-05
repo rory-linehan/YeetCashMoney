@@ -13,9 +13,10 @@
         },
         "activities": [
           {
-            "name": "smelt_steel_edgeville",
-            "schedule": {
-              "seconds": 10000
+            "name": "navigation_mining_guild_and_edgeville",
+            "type": "navigation",
+            "parameters": {
+              "direction": 0
             }
           }
         ]

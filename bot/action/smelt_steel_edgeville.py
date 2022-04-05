@@ -13,7 +13,7 @@ REVERSE = True
 BAIL = 100
 INVENTORY_NUMBER_STEEL_BARS = 8
 INVENTORY_NUMBER_ORES = 27
-SELECTOR_MATRIX = [
+COMMON_SELECTOR = [
   'inventory_box_empty',
   'bank_window',
   'action_bar_full',
@@ -28,7 +28,7 @@ SELECTOR_MATRIX = [
 ]
 
 
-def start_smelting(objects, COMMON_OBJECTS):
+def start_smelting(objects, common_objects):
   print('selecting furnace...')
   for image in objects['furnace_actual']:
     furnace = common.find_object(
@@ -46,7 +46,7 @@ def start_smelting(objects, COMMON_OBJECTS):
   print('selecting steel bar menu option...')
   furnace_menu = []
   while len(furnace_menu) == 0:
-    for image in COMMON_OBJECTS['menu_steel_bar']:
+    for image in common_objects['menu_steel_bar']:
       furnace_menu = common.find_object(
         image,
         INVENTORY_THRESHOLD
@@ -68,7 +68,7 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  OBJECT_SELECTOR = [  # object matrix
+  MODULE_SELECTOR = [
     'bank_booth',
     'location_bank',
     'location_furnace',
@@ -76,11 +76,11 @@ def run(interval):
   ]
   # do not bot for longer than the configured time
   while datetime.now() < end_time:
-    objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
+    objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
     print('calculating inventory box...')
     inventory_box = common.calculate_inventory_box(
       [
-        COMMON_OBJECTS['inventory_box_empty']
+        common_objects['inventory_box_empty']
       ],
       MATCH_THRESHOLD,
       DEBUG
@@ -91,16 +91,16 @@ def run(interval):
     print('getting iron and coal...')
     common.withdraw(
       inventory_box,
-      COMMON_OBJECTS,
+      common_objects,
       objects['bank_booth'],
       [
-        COMMON_OBJECTS['iron_bank'],
-        COMMON_OBJECTS['coal_bank'],
-        COMMON_OBJECTS['coal_bank']  # need to fill the rest of the inventory with coal
+        common_objects['iron_bank'],
+        common_objects['coal_bank'],
+        common_objects['coal_bank']  # need to fill the rest of the inventory with coal
       ],
       [
-        COMMON_OBJECTS['iron_inventory'],
-        COMMON_OBJECTS['coal_inventory']
+        common_objects['iron_inventory'],
+        common_objects['coal_inventory']
       ],
       BANK_THRESHOLD,
       INVENTORY_THRESHOLD,
@@ -110,32 +110,32 @@ def run(interval):
     _, steel_bars = common.check_inventory(
       inventory_box,
       [
-        COMMON_OBJECTS['steel_bar_inventory']
+        common_objects['steel_bar_inventory']
       ],
       MATCH_THRESHOLD,
       INVENTORY_NUMBER_STEEL_BARS
     )
-    start_smelting(objects, COMMON_OBJECTS)
+    start_smelting(objects, common_objects)
     while steel_bars < INVENTORY_NUMBER_STEEL_BARS:
       changed = common.wait_for_inventory_to_change(
         inventory_box,
         [
-          COMMON_OBJECTS['steel_bar_inventory']
+          common_objects['steel_bar_inventory']
         ],
         MATCH_THRESHOLD,
         BAIL
       )
       if changed is False:
         not_smelting = common.find_object(
-          COMMON_OBJECTS['not_smelting'][0],
+          common_objects['not_smelting'][0],
           INVENTORY_THRESHOLD
         )
         if len(not_smelting) > 0:  # probably gained a level, restart smelting
-          start_smelting(objects, COMMON_OBJECTS)
+          start_smelting(objects, common_objects)
       done, steel_bars = common.check_inventory(
         inventory_box,
         [
-          COMMON_OBJECTS['steel_bar_inventory']
+          common_objects['steel_bar_inventory']
         ],
         MATCH_THRESHOLD,
         INVENTORY_NUMBER_STEEL_BARS
@@ -145,11 +145,11 @@ def run(interval):
         print('depositing inventory ('+str(steel_bars)+')...')
         common.deposit(
           inventory_box,
-          COMMON_OBJECTS,
+          common_objects,
           objects['bank_booth'],
           [
-            COMMON_OBJECTS['steel_bar_inventory'],
-            COMMON_OBJECTS['iron_inventory']
+            common_objects['steel_bar_inventory'],
+            common_objects['iron_inventory']
           ],
           BANK_THRESHOLD,
           INVENTORY_THRESHOLD,

@@ -13,7 +13,7 @@ NO_REVERSE = False
 REVERSE = True
 BAIL = 20
 INVENTORY_NUMBER = 25
-SELECTOR_MATRIX = [
+COMMON_SELECTOR = [
   'iron_inventory',
   'bank_window',
   'action_bar_full',
@@ -32,21 +32,21 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  OBJECT_SELECTOR = [  # object matrix
+  MODULE_SELECTOR = [
     'iron_rock',
     'location_bank',
     'location_mine',
     'bank_booth'  # TODO: this should really be in `artifacts/common`, under a directory denoting the location of the bank
   ]
-  objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
+  objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
   if objects is not None and path is not None:
     # do not bot for longer than the configured time
     time.sleep(random.choice(range(1, 4)))
     while datetime.now() < end_time:
       inventory_box = common.calculate_inventory_box(
         [
-          COMMON_OBJECTS['action_bar_full'],
-          COMMON_OBJECTS['action_bar_empty']
+          common_objects['action_bar_full'],
+          common_objects['action_bar_empty']
         ],
         INVENTORY_THRESHOLD
       )
@@ -55,12 +55,12 @@ def run(interval):
       status, count = common.check_inventory(
         inventory_box,
         [
-          COMMON_OBJECTS['iron_inventory'],
-          COMMON_OBJECTS['sapphire'],
-          COMMON_OBJECTS['ruby'],
-          COMMON_OBJECTS['emerald'],
-          COMMON_OBJECTS['diamond'],
-          COMMON_OBJECTS['clue_geode']
+          common_objects['iron_inventory'],
+          common_objects['sapphire'],
+          common_objects['ruby'],
+          common_objects['emerald'],
+          common_objects['diamond'],
+          common_objects['clue_geode']
         ],
         INVENTORY_THRESHOLD,
         INVENTORY_NUMBER
@@ -75,15 +75,15 @@ def run(interval):
         )
         common.deposit(
           inventory_box,
-          COMMON_OBJECTS,
+          common_objects,
           objects['bank_booth'],
           [
-            COMMON_OBJECTS['iron_inventory'],
-            COMMON_OBJECTS['sapphire'],
-            COMMON_OBJECTS['ruby'],
-            COMMON_OBJECTS['emerald'],
-            COMMON_OBJECTS['diamond'],
-            COMMON_OBJECTS['clue_geode']
+            common_objects['iron_inventory'],
+            common_objects['sapphire'],
+            common_objects['ruby'],
+            common_objects['emerald'],
+            common_objects['diamond'],
+            common_objects['clue_geode']
           ],
           MATCH_THRESHOLD,
           INVENTORY_THRESHOLD,
@@ -127,12 +127,12 @@ def run(interval):
       common.wait_for_inventory_to_change(
         inventory_box,
         [
-          COMMON_OBJECTS['iron_inventory'],
-          COMMON_OBJECTS['sapphire'],
-          COMMON_OBJECTS['ruby'],
-          COMMON_OBJECTS['emerald'],
-          COMMON_OBJECTS['diamond'],
-          COMMON_OBJECTS['clue_geode']
+          common_objects['iron_inventory'],
+          common_objects['sapphire'],
+          common_objects['ruby'],
+          common_objects['emerald'],
+          common_objects['diamond'],
+          common_objects['clue_geode']
         ],
         MATCH_THRESHOLD,
         BAIL

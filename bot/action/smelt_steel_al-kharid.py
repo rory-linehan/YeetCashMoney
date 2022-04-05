@@ -13,7 +13,7 @@ REVERSE = True
 BAIL = 20
 INVENTORY_NUMBER_STEEL_BARS = 10
 INVENTORY_NUMBER_ORES = 20
-SELECTOR_MATRIX = [
+COMMON_SELECTOR = [
   'bank_booth',
   'bank_window',
   'action_bar_full',
@@ -32,13 +32,13 @@ def run(interval):
 
   # all the strings to search for in filenames
   # that identify a specific object in Runescape
-  OBJECT_SELECTOR = [  # object matrix
+  MODULE_SELECTOR = [
     'location_bank',
     'location_furnace',
     'furnace_actual',
     'menu_steel_bar'
   ]
-  objects, path, COMMON_OBJECTS = common.load_objects(MODULE, OBJECT_SELECTOR, SELECTOR_MATRIX)
+  objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
   if objects is not None and path is not None:
     time.sleep(random.choice(range(1, 12)))
     # do not bot for longer than the configured time
@@ -46,8 +46,8 @@ def run(interval):
       print('calculating inventory box...')
       inventory_box = common.calculate_inventory_box(
         [
-          COMMON_OBJECTS['action_bar_full'],
-          COMMON_OBJECTS['action_bar_empty']
+          common_objects['action_bar_full'],
+          common_objects['action_bar_empty']
         ],
         INVENTORY_THRESHOLD
       )
@@ -67,7 +67,7 @@ def run(interval):
         print('getting iron and coal...')
         common.withdraw(
           inventory_box,
-          COMMON_OBJECTS,
+          common_objects,
           [
             objects['iron_bank'],
             objects['coal_bank']
@@ -150,7 +150,7 @@ def run(interval):
         print('depositing inventory (' + str(steel_bars) + ')...')
         common.deposit(
           inventory_box,
-          COMMON_OBJECTS,
+          common_objects,
           [
             objects['steel_bar_inventory']
           ],

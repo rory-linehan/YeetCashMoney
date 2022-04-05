@@ -27,7 +27,7 @@ def random_delay_preposterous():
 
 # load all images that will be used to identify
 # in-game objects for the current module
-def load_objects(module, matrix, SELECTOR_MATRIX):
+def load_objects(module, matrix, selector_matrix):
   objects = {}
   navigation = []
   common = {}
@@ -48,7 +48,7 @@ def load_objects(module, matrix, SELECTOR_MATRIX):
             objects[m].extend([os.path.join(dirpath, filename)])
   for (dirpath, dirnames, filenames) in os.walk(os.path.join('vision/artifacts', 'common')):
     for filename in filenames:
-      for m in SELECTOR_MATRIX:
+      for m in selector_matrix:
         if m not in common:
           common[m] = []
         if m in filename:
