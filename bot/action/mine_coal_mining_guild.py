@@ -24,21 +24,18 @@ COMMON_SELECTOR = [
   'diamond',
   'clue_geode'
 ]
+MODULE_SELECTOR = [
+  'coal_rock',
+  'bank_chest',
+  'coal_spot',
+  'bank_chest',
+  'in_place'
+]
 
 
 def run(input):
   # set up a bunch of variables used later
   end_time = datetime.now() + timedelta(seconds=input['interval'])
-
-  # all the strings to search for in filenames
-  # that identify a specific object in Runescape
-  MODULE_SELECTOR = [
-    'coal_rock',
-    'bank_chest',
-    'coal_spot',
-    'bank_chest',
-    'in_place'
-  ]
   objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
   if objects is not None and path is not None:
     inventory_items = [

@@ -24,20 +24,17 @@ COMMON_SELECTOR = [
   'diamond',
   'clue_geode'
 ]
+MODULE_SELECTOR = [
+  'iron_rock',
+  'location_bank',
+  'location_mine',
+  'bank_booth'
+]
 
 
 def run(interval):
   # set up a bunch of variables used later
   end_time = datetime.now() + timedelta(seconds=interval)
-
-  # all the strings to search for in filenames
-  # that identify a specific object in Runescape
-  MODULE_SELECTOR = [
-    'iron_rock',
-    'location_bank',
-    'location_mine',
-    'bank_booth'  # TODO: this should really be in `artifacts/common`, under a directory denoting the location of the bank
-  ]
   objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
   if objects is not None and path is not None:
     # do not bot for longer than the configured time

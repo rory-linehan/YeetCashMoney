@@ -6,8 +6,6 @@ NAVIGATE_THRESHOLD = 0.65
 NO_REVERSE = False
 REVERSE = True
 COMMON_SELECTOR = []
-# all the strings to search for in filenames
-# that identify a specific object in Runescape
 MODULE_SELECTOR = [
   'location_mining_guild',
   'location_edgeville'

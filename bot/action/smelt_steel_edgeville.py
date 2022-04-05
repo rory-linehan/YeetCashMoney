@@ -26,6 +26,12 @@ COMMON_SELECTOR = [
   'menu_steel_bar',
   'not_smelting'
 ]
+MODULE_SELECTOR = [
+  'bank_booth',
+  'location_bank',
+  'location_furnace',
+  'furnace_actual'
+]
 
 
 def start_smelting(objects, common_objects):
@@ -65,15 +71,6 @@ def start_smelting(objects, common_objects):
 def run(interval):
   # set up a bunch of variables used later
   end_time = datetime.now() + timedelta(seconds=interval)
-
-  # all the strings to search for in filenames
-  # that identify a specific object in Runescape
-  MODULE_SELECTOR = [
-    'bank_booth',
-    'location_bank',
-    'location_furnace',
-    'furnace_actual'
-  ]
   # do not bot for longer than the configured time
   while datetime.now() < end_time:
     objects, path, common_objects = common.load_objects(MODULE, MODULE_SELECTOR, COMMON_SELECTOR)
