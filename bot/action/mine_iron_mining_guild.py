@@ -16,8 +16,7 @@ INVENTORY_NUMBER = 26
 COMMON_SELECTOR = [
   'iron_inventory',
   'bank_window',
-  'action_bar_full',
-  'action_bar_empty',
+  'inventory_box_empty',
   'sapphire',
   'ruby',
   'emerald',
@@ -133,8 +132,8 @@ def run(input):
           )
           if len(result) > 0:
             common.move_mouse(
-              result[0][0] + 15,
-              result[0][1] + 15,
+              result[0][0] + common.offset('tiny'),
+              result[0][1] + common.offset('tiny'),
               'now'
             )
             pyautogui.leftClick()

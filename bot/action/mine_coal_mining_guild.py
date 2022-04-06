@@ -16,8 +16,7 @@ INVENTORY_NUMBER = 26
 COMMON_SELECTOR = [
   'coal_inventory',
   'bank_window',
-  'action_bar_full',
-  'action_bar_empty',
+  'inventory_box_empty',
   'sapphire',
   'ruby',
   'emerald',
