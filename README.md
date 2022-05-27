@@ -1,5 +1,7 @@
 # Runescape Python bot
 
+The world's worst quarantine project.
+
 ## System requirements and build notes
 
 Everything assumes Ubuntu 18.04.
