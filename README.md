@@ -2,15 +2,16 @@
 
 ## System requirements and build notes
 
-Everything assumes Ubuntu 18.04.
+### OS compatibility
 
-`build.sh` will install the base dependencies automatically.
+* Ubuntu 18.04
+* Ubuntu 20.04
+* Ubuntu 22.04
 
-This application expects a `ramfs` mounted at `/tmp/yeetcachemoney`:
+`build.sh` has everything you need to install the dependencies.
 
-```
-ramfs /tmp/yeetcachemoney tmpfs nodev,nosuid,noexec,nodiratime,size=128M 0 0
-```
+This application expects a `ramfs` mounted at `/tmp/yeetcachemoney`,
+which is configured in `build.sh`.
 
 `ml_build.sh` installs machine learning dependencies.
 This one you have to babysit and run one section at a time,
@@ -18,9 +19,11 @@ since a reboot is required halfway through.
 
 ### NOTE
 
-The build scripts are not robust, 
-you are better off cherrypicking the commands for installing
-the various dependencies.
+* The build scripts are not robust, 
+you are better off cherrypicking the commands for installing the various dependencies.
+* On Ubuntu 22.04, you need to disable Wayland to use Xorg:
+  * `/etc/gdm3/custom.conf`
+  * uncomment `#WaylandEnable=false`
 
 ## Botting
 
