@@ -24,6 +24,7 @@ you are better off cherrypicking the commands for installing the various depende
 * On Ubuntu 22.04, you need to disable Wayland to use Xorg:
   * `/etc/gdm3/custom.conf`
   * uncomment `#WaylandEnable=false`
+  * reboot
 
 ## Botting
 
